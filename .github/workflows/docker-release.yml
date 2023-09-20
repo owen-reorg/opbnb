@@ -105,21 +105,29 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Docker meta
-        id: meta
+        id: meta0
         uses: docker/metadata-action@v5
         with:
           images: |
-            name/app
+            ${{ github.repository_owner }}/op-batcher-test
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=sha
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ${{ github.repository_owner }}/op-batcher
+          tags: |
+            type=semver,pattern={{version}}
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
           context: .
           file: ./op-proposer/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }},${{ steps.meta0.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
