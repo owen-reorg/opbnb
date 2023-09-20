@@ -8,7 +8,6 @@ on:
     branches:
       - 'develop'
       - 'master'
-      - 'package'
     workflow_dispatch:
 
 jobs:
@@ -35,7 +34,7 @@ jobs:
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
+            type=match,pattern=v(.*),group=1
             type=sha
       - name: image meta
         id: meta
@@ -77,7 +76,7 @@ jobs:
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
+            type=match,pattern=v(.*),group=1
             type=sha
       - name: image meta
         id: meta
@@ -126,7 +125,7 @@ jobs:
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
+            type=match,pattern=v(.*),group=1
             type=sha
       - name: image meta
         id: meta
